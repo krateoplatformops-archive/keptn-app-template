@@ -14,7 +14,7 @@ spec:
 
   # these are the steps which are rendered in the frontend with the form input
   parameters:
-    - title: Demp App values
+    - title: Demo App values
       required:
         - component_id
         - description
