@@ -23,7 +23,7 @@ spec:
                 deploymentstrategy: "direct"
             - name: "release"
 
-    - name: "staging"
+    - name: "test"
       sequences:
         - name: "delivery"
           triggeredOn:
@@ -31,7 +31,7 @@ spec:
           tasks:
             - name: "deployment"
               properties:
-                deploymentstrategy: "blue_green_service"
+                deploymentstrategy: "direct"
             - name: "test"
               properties:
                 teststrategy: "performance"
@@ -39,7 +39,7 @@ spec:
             - name: "release"
         - name: "rollback"
           triggeredOn:
-            - event: "staging.delivery.finished"
+            - event: "test.delivery.finished"
               selector:
                 match:
                   result: "fail"
@@ -54,19 +54,19 @@ spec:
                 deploymentstrategy: "direct"
             - name: "release"
 
-    - name: "production"
+    - name: "prod"
       sequences:
         - name: "delivery"
           triggeredOn:
-            - event: "staging.delivery.finished"
+            - event: "test.delivery.finished"
           tasks:
             - name: "deployment"
               properties:
-                deploymentstrategy: "blue_green_service"
+                deploymentstrategy: "direct"
             - name: "release"
         - name: "rollback"
           triggeredOn:
-            - event: "production.delivery.finished"
+            - event: "prod.delivery.finished"
               selector:
                 match:
                   result: "fail"
@@ -74,7 +74,7 @@ spec:
             - name: "rollback"
         - name: "delivery-direct"
           triggeredOn:
-            - event: "staging.delivery-direct.finished"
+            - event: "test.delivery-direct.finished"
           tasks:
             - name: "deployment"
               properties:
@@ -83,7 +83,7 @@ spec:
 
         - name: "remediation"
           triggeredOn:
-            - event: "production.remediation.finished"
+            - event: "prod.remediation.finished"
               selector:
                 match:
                   evaluation.result: "fail"
